@@ -21,23 +21,22 @@ class MainActivity : AppCompatActivity() {
         mediaPlayer = MediaPlayer.create(this, R.raw.missio_bottom_of_the_deep_blue_sea)
 
         val buttonPlayStop: Button = findViewById(R.id.ButtonPlayStop)
-        seekBar = findViewById(R.id.seekBar) // Инициализация SeekBar
+        seekBar = findViewById(R.id.seekBar)
 
-        // Установка максимального значения SeekBar
         seekBar.max = mediaPlayer.duration
 
         buttonPlayStop.setOnClickListener {
             if (!mediaPlayer.isPlaying) {
                 mediaPlayer.start()
                 buttonPlayStop.setText(getString(R.string.pause_str))
-                updateSeekBar() // Начинаем обновлять SeekBar
+                updateSeekBar()
             } else {
                 mediaPlayer.pause()
                 buttonPlayStop.setText(getString(R.string.play_str))
             }
         }
 
-        // Установка слушателя для SeekBar
+
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
