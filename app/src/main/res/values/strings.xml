@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NeuroPlayer</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_text">Download Audiofile</string>
+    <string name="button_text">Download</string>
+    <string name="play_str">PLAY</string>
+    <string name="pause_str">PAUSE</string>
+</resources>
