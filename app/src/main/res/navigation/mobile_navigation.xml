@@ -3,23 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_library">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="ru.mtuci.neuroplayer.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_library"
+        android:name="ru.mtuci.neuroplayer.ui.library.LibraryFragment"
+        android:label="@string/title_library"
+        tools:layout="@layout/fragment_library">
+        <action
+            android:id="@+id/action_play_song"
+            app:destination="@id/navigation_player"
+            app:restoreState="true">
+            <argument
+                android:name="playlist"
+                app:argType="ru.mtuci.neuroplayer.models.Song[]"
+                />
+            <argument
+                android:name="position"
+                app:argType="integer"
+                />
+        </action>
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="ru.mtuci.neuroplayer.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_transformer"
+        android:name="ru.mtuci.neuroplayer.ui.transformer.TransformerFragment"
+        android:label="@string/title_transformer"
+        tools:layout="@layout/fragment_transformer" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="ru.mtuci.neuroplayer.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_player"
+        android:name="ru.mtuci.neuroplayer.ui.player.PlayerFragment"
+        android:label="Player"
+        tools:layout="@layout/fragment_player">
+        <argument
+            android:name="playlist"
+            app:argType="ru.mtuci.neuroplayer.models.Song[]"
+            />
+        <argument
+            android:name="position"
+            app:argType="integer"
+            />
+    </fragment>
 </navigation>
