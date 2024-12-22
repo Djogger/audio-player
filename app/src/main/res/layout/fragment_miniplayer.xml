@@ -8,14 +8,19 @@
 
 
     <TextView
-        android:id="@+id/songTitle2"
+        android:id="@+id/songTitleMiniPlayer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="Uni Neue"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/seekBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/seekBar"
+        app:layout_constraintEnd_toEndOf="@id/songDuration"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/SongPlayed"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/songDuration"
@@ -48,7 +53,12 @@
         android:layout_width="250dp"
         android:layout_height="30dp"
         android:layout_marginTop="16dp"
+        android:clickable="false"
+        android:focusable="false"
         android:gravity="center"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="0"
         android:progressTint="@color/main"
         android:thumbTint="@color/main"
         app:layout_constraintBottom_toBottomOf="parent"

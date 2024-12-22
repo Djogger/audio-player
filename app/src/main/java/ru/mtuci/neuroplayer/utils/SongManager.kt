@@ -11,30 +11,33 @@ import ru.mtuci.neuroplayer.models.Song
 
 object SongManager {
     private var isPlaying = false
-    private var mediaPlayer: MediaPlayer? = null
+    var mediaPlayer: MediaPlayer? = null
     private var phoneStateListener: PhoneStateListener? = null
     private var telephonyManager: TelephonyManager? = null
+    private var onPlayListener: () -> Unit = {}
+    private var onPauseListener: () -> Unit = {}
 
-    private fun initPhoneStateListener(context: Context){
+
+    private fun initPhoneStateListener(context: Context) {
         phoneStateListener = object : PhoneStateListener() {
             override fun onCallStateChanged(state: Int, phoneNumber: String?) {
 
                 when (state) {
                     TelephonyManager.CALL_STATE_RINGING -> {
                         if (mediaPlayer?.isPlaying == true) {
-                            mediaPlayer?.pause()
+                            pause()
                         }
                     }
 
                     TelephonyManager.CALL_STATE_OFFHOOK -> {
                         if (mediaPlayer?.isPlaying == true) {
-                            mediaPlayer?.pause()
+                            pause()
                         }
                     }
 
                     TelephonyManager.CALL_STATE_IDLE -> {
                         if (mediaPlayer?.isPlaying != true && isPlaying) {
-                            mediaPlayer?.start()
+                            play()
                         }
                     }
                 }
@@ -49,25 +52,46 @@ object SongManager {
         telephonyManager!!.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE)
     }
 
+
+
     fun playSong(context: Context, song: Song): MediaPlayer {
         mediaPlayer?.stop()
         mediaPlayer = MediaPlayer.create(context, song.path)
-        mediaPlayer?.start()
-        if (phoneStateListener == null){
+        play()
+        if (phoneStateListener == null) {
             initPhoneStateListener(context)
         }
-        isPlaying = true
         return mediaPlayer!!
     }
 
-    fun setOnCompleteListener(listener: () -> Unit){
+    fun setOnCompleteListener(listener: () -> Unit) {
         mediaPlayer?.setOnCompletionListener {
             isPlaying = false
             listener()
         }
     }
 
-    fun destroy(){
+    fun setOnPauseListener(listener: () -> Unit) {
+        onPauseListener = listener
+    }
+
+    fun setOnPlayListener(listener: () -> Unit) {
+        onPlayListener = listener
+    }
+
+    fun play() {
+        mediaPlayer?.start()
+        isPlaying = true
+        onPlayListener()
+    }
+
+    fun pause() {
+        mediaPlayer?.pause()
+        isPlaying = false
+        onPauseListener()
+    }
+
+    fun destroy() {
         telephonyManager?.listen(
             phoneStateListener,
             PhoneStateListener.LISTEN_NONE

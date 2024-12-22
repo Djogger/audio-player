@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.player.PlayerFragment"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context=".ui.player.PlayerFragment">
 
     <TextView
         android:id="@+id/song_played"
@@ -12,17 +12,16 @@
         android:layout_height="40dp"
         android:gravity="center"
         android:text="00:00"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/seekBar"
         app:layout_constraintEnd_toStartOf="@+id/seekBar"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toTopOf="@+id/seekBar" />
 
     <ImageButton
         android:id="@+id/ButtonPlayStop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/play_str"
         android:src="@drawable/pause_button"
@@ -30,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/seekBar"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.35000002" />
 
     <SeekBar
         android:id="@+id/seekBar"
@@ -41,9 +40,10 @@
         android:thumbTint="@color/main"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintVertical_bias="0.416" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -64,11 +64,11 @@
         android:layout_height="40dp"
         android:gravity="center"
         android:text="00:00"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/seekBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/seekBar"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toTopOf="@+id/seekBar" />
 
     <TextView
         android:id="@+id/SongName"
@@ -99,34 +99,56 @@
         app:layout_constraintTop_toBottomOf="@+id/SongName"
         app:layout_constraintVertical_bias="0.0" />
 
-    <ImageButton
-        android:id="@+id/song_back"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/song_back"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/ButtonPlayStop"
         app:layout_constraintEnd_toStartOf="@+id/ButtonPlayStop"
-        app:layout_constraintHorizontal_bias="0.651"
+        app:layout_constraintHorizontal_bias="0.638"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar"
-        app:layout_constraintVertical_bias="0.056" />
+        app:layout_constraintTop_toTopOf="@+id/ButtonPlayStop">
 
-    <ImageButton
-        android:id="@+id/song_forward"
+        <Button
+            android:id="@+id/song_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
+        <ImageView
+            android:id="@+id/song_back_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/song_back"
+             />
+
+    </FrameLayout>
+
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/song_forward"
-        app:layout_constraintBottom_toBottomOf="parent"
-
+        app:layout_constraintBottom_toBottomOf="@+id/ButtonPlayStop"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.349"
+        app:layout_constraintHorizontal_bias="0.37"
         app:layout_constraintStart_toEndOf="@+id/ButtonPlayStop"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar"
-        app:layout_constraintVertical_bias="0.056" />
+        app:layout_constraintTop_toTopOf="@+id/ButtonPlayStop">
+
+        <Button
+            android:id="@+id/song_forward"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
+        <ImageView
+            android:id="@+id/song_forward_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/song_forward" />
+    </FrameLayout>
+
 
     <!--        app:srcCompat="@drawable/f93047a7b142d0b1cfc6256960da02fc" />-->
 
