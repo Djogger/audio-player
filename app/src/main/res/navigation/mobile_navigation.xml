@@ -39,10 +39,13 @@
         <argument
             android:name="playlist"
             app:argType="ru.mtuci.neuroplayer.models.Song[]"
+            android:defaultValue="@null"
+            app:nullable="true"
             />
         <argument
             android:name="position"
             app:argType="integer"
+            android:defaultValue="0"
             />
     </fragment>
 </navigation>
