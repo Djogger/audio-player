@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,12 +19,13 @@ import androidx.navigation.fragment.navArgs
 import ru.mtuci.neuroplayer.R
 import ru.mtuci.neuroplayer.databinding.FragmentPlayerBinding
 import ru.mtuci.neuroplayer.models.Song
+import ru.mtuci.neuroplayer.utils.PlaylistManager
 import ru.mtuci.neuroplayer.utils.SongManager
+import java.util.Locale
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
 class PlayerFragment : Fragment() {
-    private lateinit var mediaPlayer: MediaPlayer
     private lateinit var seekBar: SeekBar
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var audioManager: AudioManager
@@ -49,37 +51,33 @@ class PlayerFragment : Fragment() {
 
     }
 
-    private fun playSong(playlist: Array<Song>, position: Int){
-        val song = playlist[position]
+    private fun playSong(mediaPlayer: MediaPlayer){
+        val song = PlaylistManager.song!!
         binding.SongName.text = song.title
         binding.artistName.text = song.artist
         val duration = song.duration.toDuration(DurationUnit.MILLISECONDS)
         binding.sondDuration.text =
-            String.format("%02d:%02d", duration.inWholeMinutes, duration.inWholeSeconds % 60)
-        mediaPlayer = songManager.playSong(requireContext(), song)
+            String.format(Locale.ROOT, "%02d:%02d", duration.inWholeMinutes, duration.inWholeSeconds % 60)
         val buttonPlayStop: ImageButton = _binding.ButtonPlayStop
         seekBar = _binding.seekBar
 
         seekBar.max = mediaPlayer.duration
-
-        updateSeekBar()
-        binding.songBack.isEnabled = position > 0
+        handler.removeCallbacksAndMessages(null)
+        updateSeekBar(mediaPlayer)
         binding.songBack.setOnClickListener {
-            playSong(playlist, position-1)
+            playSong(PlaylistManager.playPrevious(requireContext())!!)
         }
-        binding.songForward.isEnabled = position < playlist.size - 1
-        println("$position, ${playlist.size}, ${position<playlist.size -1}")
         binding.songForward.setOnClickListener {
-            playSong(playlist, position+1)
+            playSong(PlaylistManager.playNext(requireContext())!!)
         }
 
         buttonPlayStop.setOnClickListener {
             if (!mediaPlayer.isPlaying) {
-                mediaPlayer.start()
+                songManager.play()
                 buttonPlayStop.setImageResource(R.drawable.pause_button)
-                updateSeekBar()
+                updateSeekBar(mediaPlayer)
             } else {
-                mediaPlayer.pause()
+                songManager.pause()
                 buttonPlayStop.setImageResource(R.drawable.play_button)
             }
         }
@@ -88,6 +86,7 @@ class PlayerFragment : Fragment() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
                     mediaPlayer.seekTo(progress)
+                    updateSeekBar(mediaPlayer)
                 }
             }
 
@@ -102,13 +101,19 @@ class PlayerFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        playSong(args.playlist, args.position)
+        val mediaPlayer = if (args.playlist == null){
+            songManager.mediaPlayer!!
+        }else{
+            PlaylistManager.playPlaylist(requireContext(), args.playlist!!, args.position)
+        }
+
+        playSong(mediaPlayer)
 
         super.onViewCreated(view, savedInstanceState)
 
     }
 
-    private fun updateSeekBar() {
+    private fun updateSeekBar(mediaPlayer: MediaPlayer) {
         val duration = mediaPlayer.currentPosition.toDuration(DurationUnit.MILLISECONDS)
         binding.songPlayed.text =
             String.format("%02d:%02d", duration.inWholeMinutes, duration.inWholeSeconds % 60)
@@ -116,7 +121,7 @@ class PlayerFragment : Fragment() {
         if (mediaPlayer.isPlaying) {
             handler.postDelayed({
                 if (!isRemoving) {
-                    updateSeekBar()
+                    updateSeekBar(mediaPlayer)
                 }
             }, 10)
         }else{

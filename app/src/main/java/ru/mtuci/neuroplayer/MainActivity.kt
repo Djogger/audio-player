@@ -1,12 +1,15 @@
 package ru.mtuci.neuroplayer
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.loader.content.CursorLoader
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -14,6 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import ru.mtuci.neuroplayer.databinding.ActivityMainBinding
 import ru.mtuci.neuroplayer.utils.SongManager
+import android.content.Context
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,7 +44,6 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
 
         navController = navFragment.navController
-
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
