@@ -14,7 +14,7 @@ async def handle_client(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
         data = b""
         while True:
             try:
-                chunk = await asyncio.wait_for(reader.read(1024 * 1024), timeout=2.0)
+                chunk = await asyncio.wait_for(reader.read(1024 * 1024), timeout=10.0)
                 if not chunk:
                     break
                 data += chunk
@@ -25,7 +25,7 @@ async def handle_client(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
         print(f"Received {len(data)} bytes of data from client.")
 
         os.makedirs(FILES_DIR, exist_ok=True)
-        input_file = os.path.join(FILES_DIR, "received_audio.wav")
+        input_file = os.path.join(FILES_DIR, "received_audio.mp3")
         with open(input_file, "wb") as f:
             f.write(data)
 
@@ -33,7 +33,7 @@ async def handle_client(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
 
         process_audio()
 
-        output_file = os.path.join(FILES_DIR, "denoised_audio.wav")
+        output_file = os.path.join(FILES_DIR, "denoised_audio.mp3")
         with open(output_file, "rb") as f:
             processed_data = f.read()
 
